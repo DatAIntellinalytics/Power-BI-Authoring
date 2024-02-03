@@ -1,0 +1,108 @@
+<html>
+
+<script src="jquery.js"></script>  
+<script src="powerbi.js"></script>
+<script src="https://playground.powerbi.com/app/powerbi-report-authoring.min.js"></script>
+<script type="text/javascript">
+
+window.onload = function () {  
+
+// Configure Visual 
+const Dim = {
+  $schema: "http://powerbi.com/product/schema#column",
+  table: "SampleData",
+  column: "Year"
+};
+
+const Exp = {
+  $schema:"http://powerbi.com/product/schema#measure",
+  table: "SampleData",
+  column: "Sales"
+};
+
+// Format Visual
+
+const Datalabel = {
+    visible: true
+    };
+	
+const Title = {
+    titleText: 'Sales by Year'
+    };
+
+const labelselector = { 
+    objectName: "dataLabels",
+    propertyName: "visible"
+};
+
+const labelpropertyValue = {
+    schema: "http://powerbi.com/product/schema#property",
+    value: Datalabel.visible
+};
+
+const titleselector = { 
+    objectName: "title",
+    propertyName: "titleText"
+};
+
+const titlepropertyValue = {
+    schema: "http://powerbi.com/product/schema#property",
+    value: Title.titleText
+};
+
+var models = window['powerbi-client'].models;
+
+var config= {
+    type: 'report',
+    tokenType: models.TokenType.Embed,
+    accessToken: 'H4sIAAAAAAAEAB2Utw60aBZE3-VPWQnTjVtpArxvoPFkeA8f3oz23bdn0tIJrs5V1d9_rOTupyT_898_9-r6STAZynwKKaK27Wd3eYMJr-ewNf_b3QczQbh1E7fCa-LKxE0cf6uQmdCk69nFFSXabGmNvazQIUgVqJFi0Sna5O7kkInWzJeOvbT-fkFf9KNECxZooaOOd33wAruDU-sSHL1hnG8VB5c0aFg-B5rzZf9gg18BDCP7aNPfE1TtdGZJG6O8M69tLxa9w2-ZoSuUNysMtrZLuaJJsOPdQY4n0q-vd4CevVYohX1F5ghSoV5YwF56QLeQQcAfxas6ZFbrWsO5ExQXw1UFmkatON-iyETGA_GOfz-nO1jVdgsscjWR2Sg2pZolNCblvYj2dv9IEjmNRvbDopOZdfW8bGDvOoMla2v7FnrxrbbqGiAJ1nCX6O2CGwVqjmv7bXSgRwfTFhcSfRaeaLWTuHTOblOnjx3_IEagI3jmZryViP04lagEAIzZH0ptclQJGWAufODQLTGZcrgAPFy-TWv4fiDODQEY-4MnUGLu_vtZmwfeXAji1r1H9tJVydZ8qFNdkwe8TzREUPhwNqPGaZFLlWTHqqGjD2B429mkmOBh544VqdgOKaJ_ilKtW0nAPx-JqMNSI2WZggWp_iJfOM01qi1WLzwOIq4DXYJuV1C-DK0YsuNw7-QtRRfawTE4PC2jnIAovQFXmx7bSl0wKpOHk_aMeec2QI90Erz2gv_wPF0TumWJSgXLR_Ao6TTHuacJzWdELEANeJmUi9XLiTeLqfOT_1yg335x9IZYrlB3X4KlqgKgFFsj5tgzHlILNxKN7F0X1d5i-YlQHaUU6p7DfZKpO_QVmNwkonUde4Ywsqtz7_SU2mh30G02gxmEfITLn__84ZYbbJNW3L862bVG7BcpUDa9RvqWf6Enz513m9PBaPuYJZd2Yti4Fy66Fzi_w8nrm_d2Q-Je9kihySshwdZIupm2ayK5oi86l8De1yRfjv5SEf2e1v0FmkR7pI2yCLRTWVSaOL5GsFeXHh4Dh1JHndFKPstLJbvdjMvChB5RUJ8YDl0Wm03ziFM13gVlzoLnxTjKTYyXVa-ZzuAe1uOGSHOfKxCELJ82vLgW6aK0s-QwJnL8pgEkhw23ldB2GPIuXCnb-EVHndVLeHZzjN4x6-Y1nGGMhcpotGqzj96u5M5HsMiKs4JWOj08X7QNlrxs8-IwzOsgVFdsE45fE8RdZuie6xokUk2Wxjyff_31j-Yb1MWi-D_LmDgV0SJCnaPU8oBLDT9SVfUv5TTVmGz7UvwwBtb0GTt6XB2GVnHhEh6FzClwlXCIYc-DA3_yo0q2NCuIQej2WZHcVw0NPsKF8CbKRCHzEIOg4R1i7EQ3qlg65IiOS145RsYG2nHw8bQMEW6BAn3zyk9s-VW-vcarlFp8sdxpzdmZj6KW2fFOkAgN7NoRc5obqb6R30j0FDQbt_5wdgOTeO4-OrBqSjyXfHOAnphDEB01vgZ0uFB2wEP-9ymWTD8JIge1nQ8Aej8DImTTZiGMKJ2FWe83ZQW7YimYtt4Z0xgFmHN0b4oefuZAb7KR-awSBYZY898qZefR9cR6LSzA70q1_LW8ml959Pif1E3KR9ZiFDKt7Dcl5MSrasj8NP_v_9p9Qi5CBgAA.eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUlORElBLUNFTlRSQUwtQS1QUklNQVJZLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0IiwiZXhwIjoxNzA2OTY0NTgyLCJhbGxvd0FjY2Vzc092ZXJQdWJsaWNJbnRlcm5ldCI6dHJ1ZX0=',
+    embedUrl: 'https://app.powerbi.com/reportEmbed?reportId=44b89d30-37e8-4f2a-a4dd-190bb48771df',
+    datasetId: '4fd1e7a0-b89c-42e1-a53d-e95a2b622d0d',
+	id:'44b89d30-37e8-4f2a-a4dd-190bb48771df',
+	permissions: models.Permissions.All,
+    viewMode: models.ViewMode.Edit
+};
+
+// Get a reference to the embedded Report HTML element
+var reportContainer = $('#reportContainer')[0];
+
+// Embed the Report and Edit it within the div container.
+var report = powerbi.embed(reportContainer, config);
+
+let page ;
+
+// Event Handler 
+report.on('loaded', async function(event)
+   {
+		
+        console.log("Report Loaded Successfully");
+		page = await report.getPages();
+		
+		Embed_Visual();
+		
+		report.save();
+		
+	});
+
+Embed_Visual = async function() {
+		page = page[1];
+		page.setActive();
+		let createVisualResponse = await page.createVisual('columnChart');
+		let visual = createVisualResponse.visual;
+		await visual.addDataField('Category', Dim);
+		await visual.addDataField('Y', Exp);
+		await visual.setProperty(labelselector, labelpropertyValue);
+		await visual.setProperty(titleselector, titlepropertyValue);
+		
+}
+
+report.on("saved", function (event) {
+			console.log("Report Saved Successfully");
+			});
+			
+} 
+</script> 
+ 
+<div id="reportContainer"></div>
+
+</html>
